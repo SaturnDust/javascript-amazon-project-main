@@ -66,7 +66,7 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
         matchingItem = item;
       }
     });
-
+    
     if (matchingItem) {
       matchingItem.quantity += 1;
       console.log('add qty works')
@@ -76,6 +76,14 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
         quantity: 1,
       });
     }
+    
+    let TotalCart = 0;
+    //Mengupdate Total
+    cart.forEach((item) =>{
+      TotalCart += item.quantity      
+    });
+    document.querySelector('.js-cart-quantity').innerHTML = TotalCart;
+
 
     console.log(cart);
   });
