@@ -41,7 +41,7 @@ products.forEach((product) => {
 
         <div class="product-spacer"></div>
 
-        <div class="added-to-cart">
+        <div class="added-to-cart js-added-alert-${product.id}">
           <img src="images/icons/checkmark.png">
           Added
         </div>
@@ -56,6 +56,7 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productHTML;
 
+//add to cart function 
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
@@ -68,9 +69,10 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
       }
     });
     
+    /*kondisi pengecekanjika item yang sama di cart sama tidak perlu duplikat
+    melainkan hanya perlu menambahkan ke produk yang sudah ada*/
     if (matchingItem) {
       matchingItem.quantity += qtySelect;
-      console.log('add qty works')
     } else {
       cart.push({
         productId: productId,
@@ -78,13 +80,20 @@ document.querySelectorAll(".js-add-to-cart").forEach((button) => {
       });
     }
     
-    let TotalCart = 0;
     //Mengupdate Total
+    let TotalCart = 0;
     cart.forEach((item) =>{
-      TotalCart += item.quantity      
+      TotalCart += item.quantity;      
     });
     document.querySelector('.js-cart-quantity').innerHTML = TotalCart;
 
     console.log(cart);
+
+    //Added item to cart button alert
+    const addedAlert = document.querySelector('.js-added-alert-'+productId)
+    const addedAlertTimeout = setTimeout (() =>{
+      addedAlert.classList.remove('active');
+    }, 800);
+    addedAlert.classList.add('active');
   });
 });
