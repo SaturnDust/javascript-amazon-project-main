@@ -1,5 +1,6 @@
-import{cart} from '../data/cart.js';
-import{products} from '../data/products.js';
+import { addToCart } from "../data/cart.js";
+import { products } from "../data/products.js";
+
 
 let productHTML = "";
 
@@ -59,44 +60,36 @@ products.forEach((product) => {
 
 document.querySelector(".js-products-grid").innerHTML = productHTML;
 
-//add to cart function 
+function updateTotalQty() {
+  //Mengupdate Total
+  let TotalCart = 0;
+  cart.forEach((cartItem) => {
+    TotalCart += cartItem.quantity;
+  });
+  document.querySelector(".js-cart-quantity").innerHTML = TotalCart;
+
+  console.log(cart);
+}
+
+function addedItemAlert(productId) {
+  //Added item to cart button alert
+  const addedAlert = document.querySelector(".js-added-alert-" + productId);
+  setTimeout(() => {
+    addedAlert.classList.remove("active");
+  }, 800);
+  addedAlert.classList.add("active");
+}
+
+
 document.querySelectorAll(".js-add-to-cart").forEach((button) => {
   button.addEventListener("click", () => {
     const productId = button.dataset.productId;
-    const qtySelect = Number(document.querySelector('.js-quantity-selector-'+productId).value);
+    const qtySelect = Number(
+      document.querySelector(".js-quantity-selector-" + productId).value
+    );
 
-    let matchingItem;
-    cart.forEach((item) => {
-      if (productId === item.productId) {
-        matchingItem = item;
-      }
-    });
-    
-    /*kondisi pengecekanjika item yang sama di cart sama tidak perlu duplikat
-    melainkan hanya perlu menambahkan ke produk yang sudah ada*/
-    if (matchingItem) {
-      matchingItem.quantity += qtySelect;
-    } else {
-      cart.push({
-        productId: productId,
-        quantity: qtySelect,
-      });
-    }
-    
-    //Mengupdate Total
-    let TotalCart = 0;
-    cart.forEach((item) =>{
-      TotalCart += item.quantity;      
-    });
-    document.querySelector('.js-cart-quantity').innerHTML = TotalCart;
-
-    console.log(cart);
-
-    //Added item to cart button alert
-    const addedAlert = document.querySelector('.js-added-alert-'+productId)
-    const addedAlertTimeout = setTimeout (() =>{
-      addedAlert.classList.remove('active');
-    }, 800);
-    addedAlert.classList.add('active');
+    addToCart(productId, qtySelect);
+    updateTotalQty();
+    addedItemAlert(productId);
   });
 });
