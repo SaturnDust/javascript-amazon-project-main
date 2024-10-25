@@ -89,6 +89,10 @@ cart.forEach((cartItem) => {
 
 document.querySelector('.js-order-summary').innerHTML = cartSummaryHTML;
 
+function updateTotalQty(){
+  let TotalCart = 0;
+}
+
 document.querySelectorAll('.js-delete-link').forEach((link) => {
   link.addEventListener('click', () => {
     console.log('item cart deleted');

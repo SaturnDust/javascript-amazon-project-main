@@ -1,8 +1,11 @@
 import { addToCart, cart } from '../data/cart.js';
 import { products } from '../data/products.js';
 import { formatCurrency } from './utils/money.js';
+import {countCartTotal} from './utils/cartTotal.js';
 
 let productHTML = '';
+
+updateTotalQty();
 
 products.forEach((product) => {
   productHTML += `
@@ -62,13 +65,7 @@ document.querySelector(".js-products-grid").innerHTML = productHTML;
 
 function updateTotalQty() {
   //Mengupdate Total
-  let TotalCart = 0;
-  cart.forEach((cartItem) => {
-    TotalCart += cartItem.quantity;
-  });
-  document.querySelector(".js-cart-quantity").innerHTML = TotalCart;
-
-  console.log(cart);
+  document.querySelector(".js-cart-quantity").innerHTML = countCartTotal();
 }
 
 function addedItemAlert(productId) {
