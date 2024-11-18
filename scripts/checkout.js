@@ -8,7 +8,7 @@ import { deliveryOptions } from "../data/deliveryOptions.js";
 
 let cartSummaryHTML = "";
 
-hello();
+//hello();
 
 const today = dayjs();
 const deliveryDate = today.add(7, "days");
@@ -58,9 +58,7 @@ cart.forEach((cartItem) => {
                 </div>
                 <div class="product-quantity">
                   <span>
-                    Quantity: <span class="quantity-label js-quantity-label-${
-                      productQuery.id
-                    }">${cartItem.quantity}</span>
+                    Quantity: <span class="quantity-label js-quantity-label-${productQuery.id}">${cartItem.quantity}</span>
                   </span>
                   <span class="update-quantity-link link-primary js-update-link" data-product-id = "${
                     productQuery.id
@@ -135,7 +133,7 @@ function updateTotalQty() {
 //DELETE ITEM CART event
 document.querySelectorAll(".js-delete-link").forEach((link) => {
   link.addEventListener("click", () => {
-    console.log("item cart deleted");
+    // console.log("item cart deleted");
     const productId = link.dataset.productId;
 
     removeFromCart(productId);
@@ -152,10 +150,14 @@ document.querySelectorAll(".js-delete-link").forEach((link) => {
 document.querySelectorAll(".js-update-link").forEach((link) => {
   link.addEventListener("click", () => {
     const productId = link.dataset.productId;
-    const container = document.querySelector(
-      `.js-cart-item-container-${productId}`
-    );
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
+    
+    const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`);
+    quantityLabel.style.display = "none";
 
+    document.getElementById(`${productId}`).value = quantityLabel.innerHTML;
+
+    
     container.classList.add("is-editing-quantity");
   });
 });
@@ -163,20 +165,22 @@ document.querySelectorAll(".js-update-link").forEach((link) => {
 document.querySelectorAll(".save-quantity-link").forEach((link) => {
   link.addEventListener("click", () => {
     const productId = link.dataset.productId;
-    const container = document.querySelector(
-      `.js-cart-item-container-${productId}`
-    );
+    const container = document.querySelector(`.js-cart-item-container-${productId}`);
 
+    const quantityLabel = document.querySelector(`.js-quantity-label-${productId}`);
     let inputQty = document.getElementById(productId);
     inputQty = Number(inputQty.value);
-
-    updateQuantity(productId, inputQty);
-    updateTotalQty();
-
-    const quantityLabel = document.querySelector(
-      `.js-quantity-label-${productId}`
-    );
-    quantityLabel.innerHTML = inputQty;
+    
+    if(inputQty !== 0){
+      updateQuantity(productId, inputQty);
+      updateTotalQty();
+      quantityLabel.innerHTML = inputQty;
+      quantityLabel.style.display = "inline-block";
+    } else {
+      alert('Produk setidaknya berisi 1 item');
+      quantityLabel.style.display = "inline-block";
+    }
+  
 
     container.classList.remove("is-editing-quantity");
   });
@@ -187,9 +191,18 @@ document.querySelectorAll('.js-update-delivery-option').forEach((element) => {
     
     //shorthand property sample
     const {productId, deliveryOptionId} = element.dataset;
-    console.log(productId, deliveryOptionId);
     
-    updateDeliveryOption(productId, deliveryOptionId);
+    let deliveryOption;
+    deliveryOptions.forEach((option) => {
+      if(deliveryOptionId === option.id){
+        deliveryOption = option;
+      }
+    });
+    const today = dayjs();
+    const deliveryDate = today.add(deliveryOption.deliveryDays, "days");
+    const dateString = deliveryDate.format("dddd, MMMM D");
+    document.querySelector(`.js-cart-item-container-${productId} .delivery-date`).innerHTML = `Delivery date: ${dateString}`;
 
+    updateDeliveryOption(productId, deliveryOptionId);
   })
 });

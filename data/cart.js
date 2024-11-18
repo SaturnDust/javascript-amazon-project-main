@@ -16,7 +16,7 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 // }
 
 function safeToStorage(){
-  console.log(cart);
+  // console.log(cart);
   localStorage.setItem('cart', JSON.stringify(cart));
 };
 
