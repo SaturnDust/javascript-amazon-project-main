@@ -81,3 +81,10 @@ export function updateDeliveryOption(productId, deliveryOptionId){
   safeToStorage();
 };
  
+export function countCartTotal() {
+  let TotalCart = 0;
+  cart.forEach((cartItem) => {
+    TotalCart += cartItem.quantity;
+  });
+  return TotalCart; 
+}
