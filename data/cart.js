@@ -1,4 +1,9 @@
-export let cart = JSON.parse(localStorage.getItem('cart')) || [];
+export let cart;
+
+loadFromStorage();
+
+export function loadFromStorage() {
+  cart = JSON.parse(localStorage.getItem('cart')) || [];
 
 // if(!cart){
 //   cart = [
@@ -14,6 +19,8 @@ export let cart = JSON.parse(localStorage.getItem('cart')) || [];
 //     }
 //   ];
 // }
+}
+
 
 function safeToStorage(){
   // console.log(cart);
@@ -28,7 +35,7 @@ export function addToCart(productId, qtySelect) {
     }
   });
 
-  /*kondisi pengecekanjika item yang sama di cart sama tidak perlu duplikat
+  /*kondisi pengecekan jika item yang sama di cart sama tidak perlu duplikat
       melainkan hanya perlu menambahkan ke produk yang sudah ada*/
   if (matchingItem) {
     matchingItem.quantity += qtySelect;

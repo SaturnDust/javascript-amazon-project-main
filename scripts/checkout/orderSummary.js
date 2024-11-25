@@ -12,9 +12,9 @@ import { renderPayments } from "./paymentSummary.js";
 // const today = dayjs();
 // const deliveryDate = today.add(7, "days");
 
-//updateTotalQty();
 
 export function renderOrderSummary() {
+  updateTotalQty();
 
   let cartSummaryHTML = "";
   cart.forEach((cartItem) => {
@@ -116,9 +116,7 @@ export function renderOrderSummary() {
   }
 
   function updateTotalQty() {
-    document.querySelector(
-      ".js-cart-quantity"
-    ).innerHTML = `${countCartTotal()} items`;
+    document.querySelector(".js-cart-quantity").innerHTML = `${countCartTotal()} items`;
   }
 
   //DELETE ITEM CART event
