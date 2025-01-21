@@ -23,7 +23,6 @@ export function loadFromStorage() {
 
 
 function safeToStorage(){
-  // console.log(cart);
   localStorage.setItem('cart', JSON.stringify(cart));
 };
 

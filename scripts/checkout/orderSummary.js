@@ -14,8 +14,7 @@ import { renderPayments } from "./paymentSummary.js";
 
 
 export function renderOrderSummary() {
-  updateTotalQty();
-
+  
   let cartSummaryHTML = "";
   cart.forEach((cartItem) => {
     const productId = cartItem.productId;
@@ -30,7 +29,7 @@ export function renderOrderSummary() {
     const dateString = deliveryDate.format("dddd, MMMM D");
 
     cartSummaryHTML += `
-        <div class="cart-item-container js-cart-item-container-${
+        <div class="cart-item-container js-cart-item-container js-cart-item-container-${
           productQuery.id
         }">
               <div class="delivery-date">
@@ -47,7 +46,7 @@ export function renderOrderSummary() {
                   <div class="product-price">
                     $${formatCurrency(productQuery.priceCents)}
                   </div>
-                  <div class="product-quantity">
+                  <div class="product-quantity js-product-quantity-${productQuery.productId}">
                     <span>
                       Quantity: <span class="quantity-label js-quantity-label-${productQuery.id}">${cartItem.quantity}</span>
                     </span>
@@ -81,6 +80,7 @@ export function renderOrderSummary() {
         `;
   });
   document.querySelector(".js-order-summary").innerHTML = cartSummaryHTML;
+  updateTotalQty();
 
   function deliveryOptionsHtml(productQueryId, cartItem) {
     let html = "";
@@ -193,4 +193,5 @@ export function renderOrderSummary() {
       renderPayments();
     })
   });
+
 };
